@@ -17,7 +17,7 @@ User.hasOne(UserProfile, { sourceKey: 'id' });
 
 export const createUser: RequestHandler = async (req, res, next) => {
   try {
-    const { email, password, name, displayName } = req.body;
+    const { password } = req.body;
 
     const salt = parseInt(process.env.SALT_WORKFACTOR || "", 10);
     const hash = await bcrypt.hash(password, salt);
@@ -65,9 +65,9 @@ export const getUserProfileById: RequestHandler = async (req, res, next) => {
     } else {
       res.status(404).send("Resource not found!")
     }
-  } else {
-    return res.status(401).json({ message: "Not Authorized" });
   }
+
+  return res.status(401).json({ message: "Not Authorized" });
 };
 
 export const updateUserProfile: RequestHandler = async (req, res, next) => {

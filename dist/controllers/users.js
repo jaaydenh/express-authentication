@@ -13,7 +13,7 @@ userProfile_1.UserProfile.belongsTo(users_1.User, { targetKey: 'id' });
 users_1.User.hasOne(userProfile_1.UserProfile, { sourceKey: 'id' });
 const createUser = async (req, res, next) => {
     try {
-        const { email, password, name, displayName } = req.body;
+        const { password } = req.body;
         const salt = parseInt(process.env.SALT_WORKFACTOR || "", 10);
         const hash = await bcrypt_1.default.hash(password, salt);
         const result = await models_1.default.transaction(async (t) => {
@@ -55,9 +55,7 @@ const getUserProfileById = async (req, res, next) => {
             res.status(404).send("Resource not found!");
         }
     }
-    else {
-        return res.status(401).json({ message: "Not Authorized" });
-    }
+    return res.status(401).json({ message: "Not Authorized" });
 };
 exports.getUserProfileById = getUserProfileById;
 const updateUserProfile = async (req, res, next) => {
