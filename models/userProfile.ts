@@ -5,6 +5,7 @@ import {
   InferAttributes,
   InferCreationAttributes
 } from 'sequelize';
+
 import db from './index';
 import User from './users';
 

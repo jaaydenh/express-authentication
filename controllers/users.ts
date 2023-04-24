@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
-import db from "../models";
 
+import db from "../models";
 import { User } from "../models/users";
 import { UserProfile } from "../models/userProfile";
 import { authenticate } from "./helpers";

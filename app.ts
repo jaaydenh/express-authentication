@@ -1,11 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import session from 'express-session';
+import SequelizeStore from 'connect-session-sequelize';
+
 import routes from './routes';
 import db from "./models";
 
 // initalize sequelize with session store
-import SequelizeStore from 'connect-session-sequelize';
 const store = SequelizeStore(session.Store);
 
 const app = express();
