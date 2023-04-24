@@ -16,7 +16,6 @@ const createUser = async (req, res, next) => {
         const { email, password, name, displayName } = req.body;
         const salt = parseInt(process.env.SALT_WORKFACTOR || "", 10);
         const hash = await bcrypt_1.default.hash(password, salt);
-        // var user = await User.create({ ...req.body, password: hash });
         const result = await models_1.default.transaction(async (t) => {
             const user = await users_1.User.create(Object.assign(Object.assign({}, req.body), { password: hash }), { transaction: t });
             user.password = "";
@@ -49,7 +48,12 @@ const getUserProfileById = async (req, res, next) => {
     if (req.session.user) {
         const { id } = req.params;
         const userProfile = await userProfile_1.UserProfile.findOne({ where: { userId: id } });
-        return res.status(200).json(userProfile);
+        if (userProfile) {
+            return res.status(200).json(userProfile);
+        }
+        else {
+            res.status(404).send("Resource not found!");
+        }
     }
     else {
         return res.status(401).json({ message: "Not Authorized" });

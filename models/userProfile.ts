@@ -1,20 +1,12 @@
 import {
   Model,
   DataTypes,
-  UUIDV4,
   ForeignKey,
-  CreationOptional,
   InferAttributes,
   InferCreationAttributes
 } from 'sequelize';
 import db from './index';
 import User from './users';
-
-// interface UserProfileAttributes {
-//   id: string;
-//   name: string;
-//   displayName: string;
-// }
 
 export class UserProfile
   extends Model<InferAttributes<UserProfile>,

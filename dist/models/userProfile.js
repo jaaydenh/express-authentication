@@ -6,11 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserProfile = void 0;
 const sequelize_1 = require("sequelize");
 const index_1 = __importDefault(require("./index"));
-// interface UserProfileAttributes {
-//   id: string;
-//   name: string;
-//   displayName: string;
-// }
 class UserProfile extends sequelize_1.Model {
 }
 exports.UserProfile = UserProfile;

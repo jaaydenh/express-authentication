@@ -21,8 +21,6 @@ export const createUser: RequestHandler = async (req, res, next) => {
 
     const salt = parseInt(process.env.SALT_WORKFACTOR || "", 10);
     const hash = await bcrypt.hash(password, salt);
-  
-    // var user = await User.create({ ...req.body, password: hash });
 
     const result = await db.transaction(async (t) => {
   
@@ -62,7 +60,11 @@ export const getUserProfileById: RequestHandler = async (req, res, next) => {
   if (req.session.user) {
     const { id } = req.params;
     const userProfile = await UserProfile.findOne({ where: { userId: id } });
-    return res.status(200).json(userProfile);
+    if (userProfile) {
+      return res.status(200).json(userProfile);
+    } else {
+      res.status(404).send("Resource not found!")
+    }
   } else {
     return res.status(401).json({ message: "Not Authorized" });
   }
