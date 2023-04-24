@@ -84,23 +84,16 @@ export const updateUserProfile: RequestHandler = async (req, res, next) => {
 };
 
 export const loginUser: RequestHandler = async (req, res, next) => {
-  const { email, password } = req.body;
-  if (email && password) {
-    const user = await authenticate(req.body);
-      if (user) {
-        req.session.regenerate(function(){
-          req.session.user = user;
-          res.status(200).json({ message: "User login success" });
-          // res.redirect('user');
-        });
-      } else {
-        res.status(401).json({ message: "Invalid email or password" });
-        // res.redirect('/login');
-      }
-    
+  const user = await authenticate(req.body);
+  if (user) {
+    req.session.regenerate(function(){
+      req.session.user = user;
+      res.status(200).json({ message: "User login success" });
+      // res.redirect('user');
+    });
   } else {
-    const err = new Error('Email and password are required.');
-    return next(err);
+    res.status(401).json({ message: "Invalid email or password" });
+    // res.redirect('/login');
   }
 };
 

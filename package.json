@@ -23,7 +23,8 @@
     "express-session": "^1.17.3",
     "mysql2": "^3.2.3",
     "sequelize": "^6.31.0",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize-typescript": "^2.1.5",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

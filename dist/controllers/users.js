@@ -75,24 +75,17 @@ const updateUserProfile = async (req, res, next) => {
 };
 exports.updateUserProfile = updateUserProfile;
 const loginUser = async (req, res, next) => {
-    const { email, password } = req.body;
-    if (email && password) {
-        const user = await (0, helpers_1.authenticate)(req.body);
-        if (user) {
-            req.session.regenerate(function () {
-                req.session.user = user;
-                res.status(200).json({ message: "User login success" });
-                // res.redirect('user');
-            });
-        }
-        else {
-            res.status(401).json({ message: "Invalid email or password" });
-            // res.redirect('/login');
-        }
+    const user = await (0, helpers_1.authenticate)(req.body);
+    if (user) {
+        req.session.regenerate(function () {
+            req.session.user = user;
+            res.status(200).json({ message: "User login success" });
+            // res.redirect('user');
+        });
     }
     else {
-        const err = new Error('Email and password are required.');
-        return next(err);
+        res.status(401).json({ message: "Invalid email or password" });
+        // res.redirect('/login');
     }
 };
 exports.loginUser = loginUser;
