@@ -14,7 +14,7 @@ userProfile_1.UserProfile.belongsTo(users_1.User, { targetKey: 'id' });
 users_1.User.hasOne(userProfile_1.UserProfile, { sourceKey: 'id' });
 userLoginEvent_1.UserLoginEvent.belongsTo(users_1.User, { targetKey: 'id' });
 users_1.User.hasOne(userLoginEvent_1.UserLoginEvent, { sourceKey: 'id' });
-const createUser = async (req, res, next) => {
+const createUser = async (req, res) => {
     try {
         const { password } = req.body;
         const salt = parseInt(process.env.SALT_WORKFACTOR || "", 10);
@@ -34,7 +34,7 @@ const createUser = async (req, res, next) => {
     }
 };
 exports.createUser = createUser;
-const getUserProfile = async (req, res, next) => {
+const getUserProfile = async (req, res) => {
     if (req.session.user) {
         const { id } = req.session.user;
         const userProfile = await userProfile_1.UserProfile.findOne({
@@ -47,7 +47,7 @@ const getUserProfile = async (req, res, next) => {
     }
 };
 exports.getUserProfile = getUserProfile;
-const getUserProfileById = async (req, res, next) => {
+const getUserProfileById = async (req, res) => {
     if (req.session.user) {
         const { id } = req.params;
         const userProfile = await userProfile_1.UserProfile.findOne({ where: { userId: id } });
@@ -61,7 +61,7 @@ const getUserProfileById = async (req, res, next) => {
     return res.status(401).json({ message: "Not Authorized" });
 };
 exports.getUserProfileById = getUserProfileById;
-const updateUserProfile = async (req, res, next) => {
+const updateUserProfile = async (req, res) => {
     if (req.session.user) {
         const { id } = req.session.user;
         await userProfile_1.UserProfile.update(Object.assign({}, req.body), {
@@ -77,7 +77,7 @@ const updateUserProfile = async (req, res, next) => {
     }
 };
 exports.updateUserProfile = updateUserProfile;
-const loginUser = async (req, res, next) => {
+const loginUser = async (req, res) => {
     const user = await (0, helpers_1.authenticate)(req.body);
     if (user) {
         req.session.regenerate(async () => {
@@ -95,7 +95,7 @@ const loginUser = async (req, res, next) => {
     }
 };
 exports.loginUser = loginUser;
-const logoutUser = async (req, res, next) => {
+const logoutUser = async (req, res) => {
     req.session.destroy(() => {
         // console.log('Session destroyed');
     });

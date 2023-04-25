@@ -19,7 +19,7 @@ User.hasOne(UserProfile, { sourceKey: 'id' });
 UserLoginEvent.belongsTo(User, { targetKey: 'id' });
 User.hasOne(UserLoginEvent, { sourceKey: 'id' });
 
-export const createUser: RequestHandler = async (req, res, next) => {
+export const createUser: RequestHandler = async (req, res) => {
   try {
     const { password } = req.body;
 
@@ -48,7 +48,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const getUserProfile: RequestHandler = async (req, res, next) => {
+export const getUserProfile: RequestHandler = async (req, res) => {
   if (req.session.user) {
     const { id } = req.session.user;
     const userProfile = await UserProfile.findOne({
@@ -60,7 +60,7 @@ export const getUserProfile: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const getUserProfileById: RequestHandler = async (req, res, next) => {
+export const getUserProfileById: RequestHandler = async (req, res) => {
   if (req.session.user) {
     const { id } = req.params;
     const userProfile = await UserProfile.findOne({ where: { userId: id } });
@@ -74,7 +74,7 @@ export const getUserProfileById: RequestHandler = async (req, res, next) => {
   return res.status(401).json({ message: "Not Authorized" });
 };
 
-export const updateUserProfile: RequestHandler = async (req, res, next) => {
+export const updateUserProfile: RequestHandler = async (req, res) => {
   if (req.session.user) {
     const { id } = req.session.user;
     await UserProfile.update({ ...req.body }, {
@@ -89,7 +89,7 @@ export const updateUserProfile: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const loginUser: RequestHandler = async (req, res, next) => {
+export const loginUser: RequestHandler = async (req, res) => {
   const user = await authenticate(req.body);
   if (user) {
     req.session.regenerate(async () => {
@@ -107,7 +107,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const logoutUser:  RequestHandler = async (req, res, next) => {
+export const logoutUser:  RequestHandler = async (req, res) => {
   req.session.destroy(() => {
     // console.log('Session destroyed');
   });

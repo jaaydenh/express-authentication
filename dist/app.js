@@ -36,24 +36,21 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 // routes
 app.use("/", routes_1.default);
-app.use((req, res, next) => {
+app.use((req, res) => {
     res.status(404).send("Resource not found!");
 });
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     res.status(500).json({ message: err.message });
 });
 // db.sync({ force: true }) // reset db during development
 models_1.default.sync()
     .then(() => {
-    // tslint:disable-next-line:no-console
     console.log("Database successfully connected");
 })
     .catch((err) => {
-    // tslint:disable-next-line:no-console
     console.log("Error", err);
 });
 app.listen(port, () => {
-    // tslint:disable-next-line:no-console
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });

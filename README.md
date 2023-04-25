@@ -2,7 +2,7 @@
 
 Web Framework: Express
 ORM: Sequelize
-Linter: tslint
+Linter: eslint
 Node version: v18.16.0
 Authentication: Express session
 Schema Library: Zod
