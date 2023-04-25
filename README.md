@@ -21,7 +21,9 @@ I chose Zod because of its ease of use for a small project. Joi and Yup would be
 
 Notes:
 
-Although a .env file is included in the project, normally this file would be setup independently for dev, staging and prod.
+- Although a .env file is included in the project, normally this file would be setup independently for dev, staging and prod.
+- Added a /register route for creating users for testing.
+- Added a /logout route for testing authentication.
 
 
 Feedback:
