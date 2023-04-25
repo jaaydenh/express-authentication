@@ -67,8 +67,10 @@ const updateUserProfile = async (req, res, next) => {
         await userProfile_1.UserProfile.update(Object.assign({}, req.body), {
             where: { userId: id }
         });
-        const user = await users_1.User.scope('withPassword').findByPk(id);
-        return res.status(200).json(user);
+        const userProfile = await userProfile_1.UserProfile.findOne({
+            where: { userId: id }
+        });
+        return res.status(200).json(userProfile);
     }
     else {
         return res.status(401).json({ message: "Not Authorized" });
