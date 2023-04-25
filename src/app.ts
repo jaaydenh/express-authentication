@@ -2,15 +2,16 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
 import SequelizeStore from "connect-session-sequelize";
+import helmet from "helmet";
 
 import routes from "./routes";
 import db from "./models";
 
-// initalize sequelize with session store
 const store = SequelizeStore(session.Store);
 
 const app: Application = express();
 const port = process.env.PORT;
+app.use(helmet());
 app.disable("x-powered-by");
 
 app.use(
@@ -22,7 +23,8 @@ app.use(
     saveUninitialized: true,
     cookie: {
       httpOnly: true,
-      secure: false, // false for testing; Should be set to true when testing behind an ssl proxy when receiving header X-Forwarded-Proto: https
+      // domain: '', // this should be set in production
+      secure: false, // false for testing; Should be set to true when behind an ssl proxy when receiving header X-Forwarded-Proto: https
       maxAge: 1000 * 60 * 15,
     },
     store: new store({
@@ -53,7 +55,7 @@ app.use((
   }
 );
 
-// db.sync({ force: true }).then(() => {
+// db.sync({ force: true }).then(() => { // reset db during development
 db.sync()
   .then(() => {
     console.log("Database successfully connected");
