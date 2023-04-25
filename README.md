@@ -9,7 +9,7 @@ Schema Library: Zod
 
 Authentication:
 
-The two main options for deciding the authentication were session cookies and on JWT based authentication. With the limited information regarding scalability and overall architecture of the system, session cookies felt like a safer bet because of their simplicity, reliability and security benefits. Session cookies do have potential downsides for performance and scalability because they must be stored in a database, however, an application would need quite high scalability requirements before this becomes an issue. Because of time constraints, I chose to use sequelize/MySQL as the session store but with more time I would investigate using Redis as the session store as it should have improved performance. JWT would be better for scenarios where speed is a priority. For example, in a situation where clients are communicating with multiple servers using the same authentication mechanism or where there is a lot of inter-server communication with many microservices.
+The two main options I considered for the authentication were session cookies and JWT authentication. With the limited information regarding scalability and overall architecture of the system, session cookies felt like a safer bet because of their simplicity, reliability and security benefits. Session cookies do have potential downsides for performance and scalability because they must be stored in a database, however, an application would need high scalability requirements before this becomes an issue. Because of time constraints, I chose to use sequelize/MySQL as the session store but with more time I would investigate using Redis as the session store as it should provide improved performance. JWT would be better for scenarios where speed is a priority. For example, in a situation where clients are communicating with multiple servers using the same authentication mechanism or where there is a lot of inter-server communication with many microservices. The main downside of JWT is that it is difficult to invalidate the token before it has reached its expiration.
 
 ORM:
 
@@ -25,8 +25,13 @@ Notes:
 - Added a /register route for creating users for testing.
 - Added a /logout route for testing authentication.
 
+Testing:
+
+Used Postman to test the routes.
 
 Feedback:
+
+Overall, I enjoyed working on this project because it felt open-ended enough to be able to make a lot of decisions but structured to keep it relevant and  also it was possible to build a functional project in a short amount of time.
 
 There were a few inconsistencies in the swagger doc.
 - The Get for /user/{userId}/profile displays the schema for the User even though the description implies a UserProfile should be returned with a 200.
