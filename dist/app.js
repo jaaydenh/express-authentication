@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     res.status(500).json({ message: err.message });
 });
-// db.sync({ force: true }).then(() => { // reset db during development
+// db.sync({ force: true }) // reset db during development
 models_1.default.sync()
     .then(() => {
     console.log("Database successfully connected");

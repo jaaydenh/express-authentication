@@ -6,11 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.logoutUser = exports.loginUser = exports.updateUserProfile = exports.getUserProfileById = exports.getUserProfile = exports.createUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const models_1 = __importDefault(require("../models"));
+const userLoginEvent_1 = require("../models/userLoginEvent");
 const users_1 = require("../models/users");
 const userProfile_1 = require("../models/userProfile");
 const helpers_1 = require("./helpers");
 userProfile_1.UserProfile.belongsTo(users_1.User, { targetKey: 'id' });
 users_1.User.hasOne(userProfile_1.UserProfile, { sourceKey: 'id' });
+userLoginEvent_1.UserLoginEvent.belongsTo(users_1.User, { targetKey: 'id' });
+users_1.User.hasOne(userLoginEvent_1.UserLoginEvent, { sourceKey: 'id' });
 const createUser = async (req, res, next) => {
     try {
         const { password } = req.body;
@@ -75,15 +78,18 @@ exports.updateUserProfile = updateUserProfile;
 const loginUser = async (req, res, next) => {
     const user = await (0, helpers_1.authenticate)(req.body);
     if (user) {
-        req.session.regenerate(function () {
+        req.session.regenerate(async function () {
             req.session.user = user;
             res.status(200).json({ message: "User login success" });
-            // res.redirect('user');
+            const ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'][0] : req.socket.remoteAddress || '';
+            const userAgent = req.headers['user-agent'] || '';
+            await user.createUserLoginEvent({
+                ip, session: userAgent
+            });
         });
     }
     else {
         res.status(401).json({ message: "Invalid email or password" });
-        // res.redirect('/login');
     }
 };
 exports.loginUser = loginUser;

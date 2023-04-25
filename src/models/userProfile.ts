@@ -13,7 +13,7 @@ export class UserProfile
   extends Model<InferAttributes<UserProfile>,
   InferCreationAttributes<UserProfile>>
 {
-  public id!: string;
+  public id!: number;
   public name!: string;
   public displayName!: string;
   declare userId: ForeignKey<User['id']>;
@@ -21,30 +21,30 @@ export class UserProfile
   public readonly updatedAt?: Date;
 }
 UserProfile.init(
-{
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
+  {
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: new DataTypes.STRING(),
+      allowNull: false,
+      unique: false,
+    },
+    displayName: {
+      type: new DataTypes.STRING(),
+      allowNull: false,
+      unique: false,
+    },
   },
-  name: {
-    type: new DataTypes.STRING(),
-    allowNull: false,
-    unique: false,
-  },
-  displayName: {
-    type: new DataTypes.STRING(),
-    allowNull: false,
-    unique: false,
-  },
-},
-{
-  tableName: 'user_profiles',
-  sequelize: db,
-  defaultScope: {
-    attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'UserId'] },
-  },
-}
+  {
+    tableName: 'user_profiles',
+    sequelize: db,
+    defaultScope: {
+      attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'UserId'] },
+    },
+  }
 );
 
 export default UserProfile;

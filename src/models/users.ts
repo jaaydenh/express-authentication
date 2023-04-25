@@ -2,24 +2,27 @@ import {
   Model,
   DataTypes,
   HasOneCreateAssociationMixin,
+  HasManyCreateAssociationMixin,
   InferAttributes,
   InferCreationAttributes
 } from 'sequelize';
 
 import db from './index';
 import UserProfile from './userProfile';
+import UserLoginEvent from './userLoginEvent';
 
 export class User
   extends Model<InferAttributes<User>,
   InferCreationAttributes<User>>
 {
-  public id!: string;
+  public id!: number;
   public email!: string;
   public password!: string;
   public readonly createdAt?: Date;
   public readonly updatedAt?: Date;
 
   declare createUserProfile: HasOneCreateAssociationMixin<UserProfile>;
+  declare createUserLoginEvent: HasManyCreateAssociationMixin<UserLoginEvent>;
 }
 User.init(
   {

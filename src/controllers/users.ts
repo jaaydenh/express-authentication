@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 
 import db from "../models";
+import { UserLoginEvent } from "../models/userLoginEvent";
 import { User } from "../models/users";
 import { UserProfile } from "../models/userProfile";
 import { authenticate } from "./helpers";
@@ -14,6 +15,9 @@ declare module "express-session" {
 
 UserProfile.belongsTo(User, { targetKey: 'id' });
 User.hasOne(UserProfile, { sourceKey: 'id' });
+
+UserLoginEvent.belongsTo(User, { targetKey: 'id' });
+User.hasOne(UserLoginEvent, { sourceKey: 'id' });
 
 export const createUser: RequestHandler = async (req, res, next) => {
   try {
@@ -86,14 +90,18 @@ export const updateUserProfile: RequestHandler = async (req, res, next) => {
 export const loginUser: RequestHandler = async (req, res, next) => {
   const user = await authenticate(req.body);
   if (user) {
-    req.session.regenerate(function(){
+    req.session.regenerate(async function(){
       req.session.user = user;
       res.status(200).json({ message: "User login success" });
-      // res.redirect('user');
+
+      const ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'][0] : req.socket.remoteAddress || '';
+      const userAgent = req.headers['user-agent'] || '';
+      await user.createUserLoginEvent({
+        ip, session: userAgent
+      })
     });
   } else {
     res.status(401).json({ message: "Invalid email or password" });
-    // res.redirect('/login');
   }
 };
 

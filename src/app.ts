@@ -55,7 +55,7 @@ app.use((
   }
 );
 
-// db.sync({ force: true }).then(() => { // reset db during development
+// db.sync({ force: true }) // reset db during development
 db.sync()
   .then(() => {
     console.log("Database successfully connected");
