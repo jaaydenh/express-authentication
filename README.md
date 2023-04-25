@@ -9,11 +9,11 @@ Schema Library: Zod
 
 Authentication:
 
-The two main options for this decision were session cookies and on JWT based authentication. The requirements do not provide enough information to confidently make a choice, however, because session cookies have well known simplicity, reliability and security benefits, it felt like a better choice with limited information. Session cookies do have the potential downside for performance and scalability because they must be stored in a database, however, an application would need quite high scalability requirements before this is an issue. Although because of time constraints, I chose to sequelize/MySQL as the session store, with more time I would investigate using Redis as the session store as it should have improved performance. JWT would be better for scenarios where speed is a priority, where clients are communicating with multiple servers using the same authentication mechanism or there is a lot of inter-server communication with many microservices.
+The two main options for deciding the authentication were session cookies and on JWT based authentication. With the limited information regarding scalability and overall architecture of the system, session cookies felt like a safer bet because of their simplicity, reliability and security benefits. Session cookies do have potential downsides for performance and scalability because they must be stored in a database, however, an application would need quite high scalability requirements before this becomes an issue. Because of time constraints, I chose to use sequelize/MySQL as the session store but with more time I would investigate using Redis as the session store as it should have improved performance. JWT would be better for scenarios where speed is a priority. For example, in a situation where clients are communicating with multiple servers using the same authentication mechanism or where there is a lot of inter-server communication with many microservices.
 
 ORM:
 
-I chose sequelize because its a battle-tested ORM with a large user based and plenty of documentation. The downside of sequelize is the limited support for Typescript because of its longer legacy with javascript. If I started a new project, I would spend time to see if Prisma was a suitable option as it appears to have better support for Typescript.
+I chose sequelize because its a battle-tested ORM with a large user based and plenty of documentation. The downside of sequelize is the limited support for Typescript because of its longer legacy with javascript. If I started a new project, I would investigate Prisma to determine if it is a suitable option as it appears to have better support for Typescript.
 
 Schema Library:
 
@@ -29,5 +29,5 @@ Notes:
 Feedback:
 
 There were a few inconsistencies in the swagger doc.
-- The Get for /user/{userId}/profile displays the schema for the User even though the description implies a UserProfile should be returned with a 200
-- The Patch for /user/ describes that the purpose is to update the UserProfile but also shows a the User scheme being returned with a 200
+- The Get for /user/{userId}/profile displays the schema for the User even though the description implies a UserProfile should be returned with a 200.
+- The Patch for /user/ describes that the purpose is to update the UserProfile but also shows the User scheme being returned with a 200 instead of UserProfile.
