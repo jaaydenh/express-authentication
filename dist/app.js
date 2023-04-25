@@ -46,11 +46,14 @@ app.use((err, req, res, next) => {
 // db.sync({ force: true }) // reset db during development
 models_1.default.sync()
     .then(() => {
+    // tslint:disable-next-line:no-console
     console.log("Database successfully connected");
 })
     .catch((err) => {
+    // tslint:disable-next-line:no-console
     console.log("Error", err);
 });
 app.listen(port, () => {
+    // tslint:disable-next-line:no-console
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });

@@ -28,7 +28,7 @@ app.use(
       maxAge: 1000 * 60 * 15,
     },
     store: new store({
-      db: db,
+      db,
     }),
   })
 );
@@ -58,12 +58,15 @@ app.use((
 // db.sync({ force: true }) // reset db during development
 db.sync()
   .then(() => {
+    // tslint:disable-next-line:no-console
     console.log("Database successfully connected");
   })
   .catch((err) => {
+    // tslint:disable-next-line:no-console
     console.log("Error", err);
   });
 
 app.listen(port, () => {
+  // tslint:disable-next-line:no-console
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });

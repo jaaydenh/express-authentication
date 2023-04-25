@@ -3,7 +3,7 @@ import {
   DataTypes,
   ForeignKey,
 } from 'sequelize';
-  
+
 import db from './index';
 import User from './users';
 

@@ -78,7 +78,7 @@ exports.updateUserProfile = updateUserProfile;
 const loginUser = async (req, res, next) => {
     const user = await (0, helpers_1.authenticate)(req.body);
     if (user) {
-        req.session.regenerate(async function () {
+        req.session.regenerate(async () => {
             req.session.user = user;
             res.status(200).json({ message: "User login success" });
             const ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'][0] : req.socket.remoteAddress || '';
@@ -95,7 +95,7 @@ const loginUser = async (req, res, next) => {
 exports.loginUser = loginUser;
 const logoutUser = async (req, res, next) => {
     req.session.destroy(() => {
-        console.log('Session destroyed');
+        // console.log('Session destroyed');
     });
     res.redirect('/');
 };

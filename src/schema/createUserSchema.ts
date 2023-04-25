@@ -23,8 +23,7 @@ export const createUserSchema = object({
   }),
 });
 
-//allows for the creation of a type that matches the validation schema
-//this schema will be used on the create user call to the db. must ommit the passwordConfirmation as the db does not have that column
+// this schema will be used on the create user call to the db. must ommit the passwordConfirmation as the db does not have that column
 export type CreateUserInput = Omit<
   TypeOf<typeof createUserSchema>,
   "body.passwordConfirmation"

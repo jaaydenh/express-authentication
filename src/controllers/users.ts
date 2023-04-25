@@ -27,7 +27,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
     const hash = await bcrypt.hash(password, salt);
 
     const result = await db.transaction(async (t) => {
-  
+
       const user = await User.create({
         ...req.body, password: hash
       }, { transaction: t });
@@ -36,7 +36,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
       await user.createUserProfile({
         ...req.body,
       }, { transaction: t });
-  
+
       return user;
     });
 
@@ -90,7 +90,7 @@ export const updateUserProfile: RequestHandler = async (req, res, next) => {
 export const loginUser: RequestHandler = async (req, res, next) => {
   const user = await authenticate(req.body);
   if (user) {
-    req.session.regenerate(async function(){
+    req.session.regenerate(async () => {
       req.session.user = user;
       res.status(200).json({ message: "User login success" });
 
@@ -107,7 +107,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
 
 export const logoutUser:  RequestHandler = async (req, res, next) => {
   req.session.destroy(() => {
-    console.log('Session destroyed');
+    // console.log('Session destroyed');
   });
   res.redirect('/');
 };
