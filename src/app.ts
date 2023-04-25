@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
 import SequelizeStore from "connect-session-sequelize";
@@ -40,16 +40,44 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // routes
 app.use("/", routes);
 
+// Error object used in error handling middleware function
+class AppError extends Error {
+  statusCode: number;
+
+  constructor(statusCode: number, message: string) {
+    super(message);
+
+    Object.setPrototypeOf(this, new.target.prototype);
+    this.name = Error.name;
+    this.statusCode = statusCode;
+    Error.captureStackTrace(this);
+  }
+}
+
+// Error handling Middleware function for logging the error message
+app.use((
+  error: Error, 
+  req: Request, 
+  res: Response, 
+  next: NextFunction) => {
+    console.log( `error ${error.message}`);
+    next(error);
+})
+
 app.use((req: Request, res: Response) => {
   res.status(404).send("Resource not found!");
 });
 
-// error handler
-app.use(( err: Error, req: Request, res: Response) => {
-  res.status(500).json({ message: err.message });
+// Error handling Middleware function reads the error message and sends JSON response
+app.use((
+  error: AppError, 
+  req: Request, 
+  res: Response) => {
+      const status = error.statusCode || 400;
+      res.status(status).json({ message: error.message });
 });
 
-// db.sync({ force: true }) // reset db during development
+// db.sync({ force: true }) // used to reset db during development
 db.sync()
   .then(() => {
     console.log("Database successfully connected");

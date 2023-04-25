@@ -36,14 +36,30 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 // routes
 app.use("/", routes_1.default);
+// Error object used in error handling middleware function
+class AppError extends Error {
+    constructor(statusCode, message) {
+        super(message);
+        Object.setPrototypeOf(this, new.target.prototype);
+        this.name = Error.name;
+        this.statusCode = statusCode;
+        Error.captureStackTrace(this);
+    }
+}
+// Error handling Middleware function for logging the error message
+app.use((error, req, res, next) => {
+    console.log(`error ${error.message}`);
+    next(error);
+});
 app.use((req, res) => {
     res.status(404).send("Resource not found!");
 });
-// error handler
-app.use((err, req, res) => {
-    res.status(500).json({ message: err.message });
+// Error handling Middleware function reads the error message and sends JSON response
+app.use((error, req, res) => {
+    const status = error.statusCode || 400;
+    res.status(status).json({ message: error.message });
 });
-// db.sync({ force: true }) // reset db during development
+// db.sync({ force: true }) // used to reset db during development
 models_1.default.sync()
     .then(() => {
     console.log("Database successfully connected");
